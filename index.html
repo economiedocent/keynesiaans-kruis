@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Les over Keynes</title>
+</head>
+<body>
+    <h1>Uitleg van het Keynesiaanse Model</h1>
+    <p>Hieronder zie je een interactief model...</p>
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keynesiaans Kruisdiagram</title>
+    <!-- Tailwind CSS voor styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js voor de grafiek -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom stijlen voor de sliders */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #10B981; /* Emerald 500 */
+            cursor: pointer;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #10B981;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Interactief Keynesiaans Kruisdiagram</h1>
+            <p class="text-lg text-gray-600 mt-2">Verken de relatie tussen geaggregeerde bestedingen en het nationaal inkomen.</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Linker kolom: Bedieningspaneel -->
+            <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-6 border-b pb-3">Parameters Aanpassen</h2>
+                
+                <div class="space-y-6">
+                    <!-- Autonome Consumptie (C) -->
+                    <div>
+                        <label for="autonomeConsumptie" class="flex justify-between font-medium text-gray-700">
+                            <span>Autonome Consumptie (C₀)</span>
+                            <span id="autonomeConsumptieWaarde" class="font-bold text-emerald-600">100</span>
+                        </label>
+                        <input type="range" id="autonomeConsumptie" min="0" max="500" value="100" step="10" class="mt-2">
+                    </div>
+
+                    <!-- Overheidsbestedingen (G) -->
+                    <div>
+                        <label for="overheidsbestedingen" class="flex justify-between font-medium text-gray-700">
+                            <span>Overheidsbestedingen (G)</span>
+                            <span id="overheidsbestedingenWaarde" class="font-bold text-emerald-600">200</span>
+                        </label>
+                        <input type="range" id="overheidsbestedingen" min="0" max="500" value="200" step="10" class="mt-2">
+                    </div>
+                    
+                    <!-- Marginale Consumptiequote (c) -->
+                    <div>
+                        <label for="mpc" class="flex justify-between font-medium text-gray-700">
+                            <span>Marginale Consumptiequote (c)</span>
+                            <span id="mpcWaarde" class="font-bold text-emerald-600">0.80</span>
+                        </label>
+                        <input type="range" id="mpc" min="0.1" max="0.95" value="0.8" step="0.01" class="mt-2">
+                    </div>
+
+                    <!-- Belastingtarief (t) -->
+                    <div>
+                        <label for="taxRate" class="flex justify-between font-medium text-gray-700">
+                            <span>Belastingtarief (t)</span>
+                            <span id="taxRateWaarde" class="font-bold text-emerald-600">0.20</span>
+                        </label>
+                        <input type="range" id="taxRate" min="0" max="0.5" value="0.2" step="0.01" class="mt-2">
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t">
+                    <h3 class="text-xl font-semibold mb-4">Resultaten</h3>
+                    <div class="bg-gray-100 p-4 rounded-lg space-y-2">
+                        <div class="flex justify-between items-center text-md">
+                            <span class="text-gray-600">Multiplier (α):</span>
+                            <span id="multiplier" class="font-bold text-lg text-gray-900">2.78</span>
+                        </div>
+                        <div class="flex justify-between items-center text-md">
+                            <span class="text-gray-600">Evenwichtsinkomen (Y*):</span>
+                            <span id="evenwichtsinkomen" class="font-bold text-lg text-gray-900">833</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rechter kolom: Grafiek en uitleg -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                <canvas id="keynesianCrossChart"></canvas>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold mb-2">Uitleg van het model</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Het Keynesiaanse kruis toont het evenwicht op de goederenmarkt. Het evenwicht wordt bereikt waar de geaggregeerde bestedingen (GB) (=EV) gelijk zijn aan het nationaal inkomen/productie (Y).
+                        <br><br>
+                        - De <span class="font-semibold text-blue-600">blauwe lijn</span> is de 45-gradenlijn, waarvoor geldt <strong>Y = GB = EV</strong>. Elk punt op deze lijn representeert een potentieel evenwicht.
+                        <br>
+                        - De <span class="font-semibold text-red-600">rode lijn</span> is de feitelijke geaggregeerde bestedingscurve, met de formule: <strong>EV = C₀ + c(1-t)Y + G</strong> effectieve vraag = de autonome consumptie + consumptiequote x (inkomen-belasting) +overheidsbestedingen.
+                        <br><br>
+                        Het snijpunt van deze twee lijnen (<span class="font-semibold text-emerald-600">groene stip</span>) bepaalt het <strong>evenwichtsinkomen (Y*)</strong>, waar de geplande bestedingen exact gelijk zijn aan de productie. Pas de parameters aan de linkerkant aan om te zien hoe de GB-curve en het evenwichtsinkomen veranderen.
+                    </p>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        const ctx = document.getElementById('keynesianCrossChart').getContext('2d');
+
+        // Referenties naar de input-elementen en waarde-displays
+        const c0Input = document.getElementById('autonomeConsumptie');
+        const gInput = document.getElementById('overheidsbestedingen');
+        const mpcInput = document.getElementById('mpc');
+        const taxRateInput = document.getElementById('taxRate');
+
+        const c0ValueDisplay = document.getElementById('autonomeConsumptieWaarde');
+        const gValueDisplay = document.getElementById('overheidsbestedingenWaarde');
+        const mpcValueDisplay = document.getElementById('mpcWaarde');
+        const taxRateValueDisplay = document.getElementById('taxRateWaarde');
+
+        const multiplierDisplay = document.getElementById('multiplier');
+        const equilibriumDisplay = document.getElementById('evenwichtsinkomen');
+
+        let chart;
+
+        // Aangepaste plugin om stippellijnen van het evenwichtspunt naar de assen te tekenen
+        const dashedLinesPlugin = {
+            id: 'dashedLines',
+            afterDraw: (chart) => {
+                const { ctx, chartArea: { left, bottom } } = chart;
+
+                const equilibriumDatasetIndex = chart.data.datasets.findIndex(ds => ds.label === 'Evenwicht');
+                if (equilibriumDatasetIndex === -1 || chart.getDatasetMeta(equilibriumDatasetIndex).data.length === 0) {
+                    return;
+                }
+
+                const equilibriumPoint = chart.getDatasetMeta(equilibriumDatasetIndex).data[0];
+                const pointX = equilibriumPoint.x;
+                const pointY = equilibriumPoint.y;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.setLineDash([5, 5]); // Stijl voor stippellijn
+                ctx.strokeStyle = 'rgba(107, 114, 128, 0.7)'; // Gray-500
+                ctx.lineWidth = 1;
+
+                // Teken verticale lijn naar de X-as
+                ctx.moveTo(pointX, pointY);
+                ctx.lineTo(pointX, bottom);
+
+                // Teken horizontale lijn naar de Y-as
+                ctx.moveTo(pointX, pointY);
+                ctx.lineTo(left, pointY);
+
+                ctx.stroke();
+                ctx.restore();
+            }
+        };
+
+        // Functie om de grafiek te tekenen/updaten
+        function drawChart() {
+            // Huidige waarden ophalen
+            const C0 = parseFloat(c0Input.value);
+            const G = parseFloat(gInput.value);
+            const mpc = parseFloat(mpcInput.value);
+            const t = parseFloat(taxRateInput.value);
+
+            // Waarde-displays updaten
+            c0ValueDisplay.textContent = C0.toFixed(0);
+            gValueDisplay.textContent = G.toFixed(0);
+            mpcValueDisplay.textContent = mpc.toFixed(2);
+            taxRateValueDisplay.textContent = t.toFixed(2);
+
+            // Berekeningen
+            const autonomeBestedingen = C0 + G;
+            const multiplier = 1 / (1 - mpc * (1 - t));
+            const evenwichtsinkomen = autonomeBestedingen * multiplier;
+            
+            // Resultaten-displays updaten
+            multiplierDisplay.textContent = multiplier.toFixed(2);
+            equilibriumDisplay.textContent = evenwichtsinkomen.toFixed(0);
+
+            // Data voor de grafiek voorbereiden
+            const maxInkomen = Math.max(3000, evenwichtsinkomen * 1.5);
+            const labels = [];
+            for (let i = 0; i <= maxInkomen; i += 100) {
+                labels.push(i);
+            }
+
+            const data45Degree = labels.map(y => y); // Y = GB
+            const dataAE = labels.map(y => autonomeBestedingen + mpc * (1 - t) * y); // GB = C + G
+
+            const chartData = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: '45-gradenlijn (Y = GB)',
+                        data: data45Degree,
+                        borderColor: 'rgba(59, 130, 246, 0.8)', // Blue 500
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.1,
+                    },
+                    {
+                        label: 'Geaggregeerde Bestedingen (GB)',
+                        data: dataAE,
+                        borderColor: 'rgba(239, 68, 68, 0.8)', // Red 500
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        tension: 0.1,
+                    },
+                    {
+                        label: 'Evenwicht',
+                        data: [{ x: evenwichtsinkomen, y: evenwichtsinkomen }],
+                        borderColor: 'rgba(16, 185, 129, 1)', // Emerald 500
+                        backgroundColor: 'rgba(16, 185, 129, 1)',
+                        pointRadius: 8,
+                        pointHoverRadius: 10,
+                        type: 'scatter',
+                    }
+                ]
+            };
+            
+            // Vernietig oude grafiek indien deze bestaat
+            if(chart) {
+                chart.destroy();
+            }
+
+            // Maak nieuwe grafiek aan
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                plugins: [dashedLinesPlugin], // Hier wordt de plugin toegevoegd
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Inkomen, Productie (Y)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            type: 'linear',
+                            position: 'bottom',
+                             min: 0,
+                             max: maxInkomen
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Geaggregeerde Bestedingen (GB)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            min: 0,
+                            max: maxInkomen
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    },
+                    animation: {
+                        duration: 200 // Soepele overgang bij update
+                    }
+                }
+            });
+        }
+
+        // Event listeners toevoegen aan alle sliders
+        [c0Input, gInput, mpcInput, taxRateInput].forEach(input => {
+            input.addEventListener('input', drawChart);
+        });
+
+        // Initieel de grafiek tekenen bij het laden van de pagina
+        window.onload = drawChart;
+    </script>
+
+</body>
+</html>
+
+
+    <p>Zoals je kunt zien, verandert het inkomen als...</p>
+</body>
+</html>
