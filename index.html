@@ -1,18 +1,9 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Les over Keynes</title>
-</head>
-<body>
-    <h1>Uitleg van het Keynesiaanse Model</h1>
-    <p>Hieronder zie je een interactief model...</p>
-
-<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keynesiaans Kruisdiagram</title>
+    <title>Keynesiaans Kruisdiagram - Vloeiende Versie</title>
     <!-- Tailwind CSS voor styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js voor de grafiek -->
@@ -24,317 +15,289 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            touch-action: manipulation;
         }
-        /* Custom stijlen voor de sliders */
+        /* Verbeterde slider styling voor soepele interactie */
         input[type="range"] {
             -webkit-appearance: none;
-            appearance: none;
             width: 100%;
-            height: 8px;
+            height: 10px;
             border-radius: 5px;
-            background: #d3d3d3;
+            background: #e5e7eb;
             outline: none;
-            opacity: 0.7;
-            -webkit-transition: .2s;
-            transition: opacity .2s;
-        }
-        input[type="range"]:hover {
-            opacity: 1;
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #10B981; /* Emerald 500 */
-            cursor: pointer;
-        }
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: #10B981;
             cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-slate-50 text-slate-800">
 
-    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+    <div class="container mx-auto p-4 md:p-6 max-w-7xl">
         
-        <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Interactief Keynesiaans Kruisdiagram</h1>
-            <p class="text-lg text-gray-600 mt-2">Verken de relatie tussen geaggregeerde bestedingen en het nationaal inkomen.</p>
+        <header class="text-center mb-6">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Interactief Keynesiaans Kruis</h1>
+            <p class="text-slate-600 mt-2">Versleep de schuifregelaars en zie direct het effect op het evenwicht.</p>
         </header>
 
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Linker kolom: Bedieningspaneel -->
-            <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-md border border-gray-200">
-                <h2 class="text-2xl font-semibold mb-6 border-b pb-3">Parameters Aanpassen</h2>
+            <!-- Bedieningspaneel -->
+            <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold mb-6 text-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    Instellingen
+                </h2>
                 
-                <div class="space-y-6">
-                    <!-- Autonome Consumptie (C) -->
+                <div class="space-y-8">
+                    <!-- Autonome Consumptie -->
                     <div>
-                        <label for="autonomeConsumptie" class="flex justify-between font-medium text-gray-700">
-                            <span>Autonome Consumptie (C₀)</span>
-                            <span id="autonomeConsumptieWaarde" class="font-bold text-emerald-600">100</span>
-                        </label>
-                        <input type="range" id="autonomeConsumptie" min="0" max="500" value="100" step="10" class="mt-2">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-600">Autonome Consumptie (C₀)</span>
+                            <span id="c0Val" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">100</span>
+                        </div>
+                        <input type="range" id="c0Slider" min="0" max="1000" value="400" step="10">
                     </div>
 
-                    <!-- Overheidsbestedingen (G) -->
+                    <!-- Overheidsbestedingen -->
                     <div>
-                        <label for="overheidsbestedingen" class="flex justify-between font-medium text-gray-700">
-                            <span>Overheidsbestedingen (G)</span>
-                            <span id="overheidsbestedingenWaarde" class="font-bold text-emerald-600">200</span>
-                        </label>
-                        <input type="range" id="overheidsbestedingen" min="0" max="500" value="200" step="10" class="mt-2">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-600">Overheidsbestedingen (O)</span>
+                            <span id="oVal" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">200</span>
+                        </div>
+                        <input type="range" id="oSlider" min="0" max="1500" value="600" step="10">
                     </div>
                     
-                    <!-- Marginale Consumptiequote (c) -->
+                    <!-- Marginale Consumptiequote -->
                     <div>
-                        <label for="mpc" class="flex justify-between font-medium text-gray-700">
-                            <span>Marginale Consumptiequote (c)</span>
-                            <span id="mpcWaarde" class="font-bold text-emerald-600">0.80</span>
-                        </label>
-                        <input type="range" id="mpc" min="0.1" max="0.95" value="0.8" step="0.01" class="mt-2">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-600">Consumptiequote (c)</span>
+                            <span id="cVal" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">0.75</span>
+                        </div>
+                        <input type="range" id="cSlider" min="0.1" max="0.95" value="0.75" step="0.01">
                     </div>
 
-                    <!-- Belastingtarief (t) -->
+                    <!-- Belastingtarief -->
                     <div>
-                        <label for="taxRate" class="flex justify-between font-medium text-gray-700">
-                            <span>Belastingtarief (t)</span>
-                            <span id="taxRateWaarde" class="font-bold text-emerald-600">0.20</span>
-                        </label>
-                        <input type="range" id="taxRate" min="0" max="0.5" value="0.2" step="0.01" class="mt-2">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-600">Belastingtarief (b)</span>
+                            <span id="bVal" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">0.20</span>
+                        </div>
+                        <input type="range" id="bSlider" min="0" max="0.5" value="0.20" step="0.01">
                     </div>
                 </div>
 
-                <div class="mt-8 pt-6 border-t">
-                    <h3 class="text-xl font-semibold mb-4">Resultaten</h3>
-                    <div class="bg-gray-100 p-4 rounded-lg space-y-2">
-                        <div class="flex justify-between items-center text-md">
-                            <span class="text-gray-600">Multiplier (α):</span>
-                            <span id="multiplier" class="font-bold text-lg text-gray-900">2.78</span>
+                <div class="mt-10 p-5 bg-slate-900 rounded-xl text-white">
+                    <h3 class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Kerncijfers</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-slate-400">Multiplier (α)</p>
+                            <p id="multiplierText" class="text-2xl font-bold">2.50</p>
                         </div>
-                        <div class="flex justify-between items-center text-md">
-                            <span class="text-gray-600">Evenwichtsinkomen (Y*):</span>
-                            <span id="evenwichtsinkomen" class="font-bold text-lg text-gray-900">833</span>
+                        <div>
+                            <p class="text-xs text-slate-400">Inkomen (Y*)</p>
+                            <p id="yStarText" class="text-2xl font-bold text-emerald-400">2500</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Rechter kolom: Grafiek en uitleg -->
-            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md border border-gray-200">
-                <canvas id="keynesianCrossChart"></canvas>
-                <div class="mt-6">
-                    <h3 class="text-xl font-semibold mb-2">Uitleg van het model</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Het Keynesiaanse kruis toont het evenwicht op de goederenmarkt. Het evenwicht wordt bereikt waar de geaggregeerde bestedingen (GB) (=EV) gelijk zijn aan het nationaal inkomen/productie (Y).
-                        <br><br>
-                        - De <span class="font-semibold text-blue-600">blauwe lijn</span> is de 45-gradenlijn, waarvoor geldt <strong>Y = GB = EV</strong>. Elk punt op deze lijn representeert een potentieel evenwicht.
-                        <br>
-                        - De <span class="font-semibold text-red-600">rode lijn</span> is de feitelijke geaggregeerde bestedingscurve, met de formule: <strong>EV = C₀ + c(1-t)Y + G</strong> effectieve vraag = de autonome consumptie + consumptiequote x (inkomen-belasting) +overheidsbestedingen.
-                        <br><br>
-                        Het snijpunt van deze twee lijnen (<span class="font-semibold text-emerald-600">groene stip</span>) bepaalt het <strong>evenwichtsinkomen (Y*)</strong>, waar de geplande bestedingen exact gelijk zijn aan de productie. Pas de parameters aan de linkerkant aan om te zien hoe de GB-curve en het evenwichtsinkomen veranderen.
+            <!-- Grafiek sectie -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="relative h-[400px] md:h-[500px]">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50 border border-emerald-100 p-5 rounded-xl">
+                    <h3 class="text-emerald-800 font-bold mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                        </svg>
+                        Wat gebeurt er?
+                    </h3>
+                    <p class="text-emerald-900 text-sm leading-relaxed">
+                        De <strong>schuine rode lijn</strong> toont de totale <strong>geaggregeerde bestedingen</strong>. Wanneer je de <em>Consumptiequote (c)</em> of het <em>Belastingtarief (b)</em> aanpast, verandert de <strong>helling</strong> van de lijn. Verander je <em>C₀</em> of <em>O</em>? Dan verschuift de hele lijn <strong>omhoog of omlaag</strong>. Het evenwicht ligt altijd op de blauwe 45-gradenlijn.
                     </p>
                 </div>
             </div>
         </main>
-
     </div>
 
     <script>
-        const ctx = document.getElementById('keynesianCrossChart').getContext('2d');
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        
+        // Elementen ophalen
+        const sC0 = document.getElementById('c0Slider');
+        const sO = document.getElementById('oSlider');
+        const sC = document.getElementById('cSlider');
+        const sB = document.getElementById('bSlider');
 
-        // Referenties naar de input-elementen en waarde-displays
-        const c0Input = document.getElementById('autonomeConsumptie');
-        const gInput = document.getElementById('overheidsbestedingen');
-        const mpcInput = document.getElementById('mpc');
-        const taxRateInput = document.getElementById('taxRate');
+        const vC0 = document.getElementById('c0Val');
+        const vO = document.getElementById('oVal');
+        const vC = document.getElementById('cVal');
+        const vB = document.getElementById('bVal');
 
-        const c0ValueDisplay = document.getElementById('autonomeConsumptieWaarde');
-        const gValueDisplay = document.getElementById('overheidsbestedingenWaarde');
-        const mpcValueDisplay = document.getElementById('mpcWaarde');
-        const taxRateValueDisplay = document.getElementById('taxRateWaarde');
+        const mText = document.getElementById('multiplierText');
+        const yText = document.getElementById('yStarText');
 
-        const multiplierDisplay = document.getElementById('multiplier');
-        const equilibriumDisplay = document.getElementById('evenwichtsinkomen');
+        // Vaste schaal voor maximale duidelijkheid
+        const FIXED_MAX = 5000;
 
-        let chart;
-
-        // Aangepaste plugin om stippellijnen van het evenwichtspunt naar de assen te tekenen
+        // Custom plugin voor de hulplijnen (stippellijnen)
         const dashedLinesPlugin = {
             id: 'dashedLines',
             afterDraw: (chart) => {
-                const { ctx, chartArea: { left, bottom } } = chart;
+                const { ctx, scales: { x, y } } = chart;
+                const equilibriumDataset = chart.data.datasets.find(d => d.id === 'eq');
+                if (!equilibriumDataset || !equilibriumDataset.data[0]) return;
 
-                const equilibriumDatasetIndex = chart.data.datasets.findIndex(ds => ds.label === 'Evenwicht');
-                if (equilibriumDatasetIndex === -1 || chart.getDatasetMeta(equilibriumDatasetIndex).data.length === 0) {
-                    return;
-                }
-
-                const equilibriumPoint = chart.getDatasetMeta(equilibriumDatasetIndex).data[0];
-                const pointX = equilibriumPoint.x;
-                const pointY = equilibriumPoint.y;
+                const point = equilibriumDataset.data[0];
+                const xPixel = x.getPixelForValue(point.x);
+                const yPixel = y.getPixelForValue(point.y);
 
                 ctx.save();
+                ctx.setLineDash([6, 6]);
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 2;
+
+                // Verticaal naar X-as
                 ctx.beginPath();
-                ctx.setLineDash([5, 5]); // Stijl voor stippellijn
-                ctx.strokeStyle = 'rgba(107, 114, 128, 0.7)'; // Gray-500
-                ctx.lineWidth = 1;
+                ctx.moveTo(xPixel, yPixel);
+                ctx.lineTo(xPixel, y.bottom);
+                ctx.stroke();
 
-                // Teken verticale lijn naar de X-as
-                ctx.moveTo(pointX, pointY);
-                ctx.lineTo(pointX, bottom);
-
-                // Teken horizontale lijn naar de Y-as
-                ctx.moveTo(pointX, pointY);
-                ctx.lineTo(left, pointY);
-
+                // Horizontaal naar Y-as
+                ctx.beginPath();
+                ctx.moveTo(xPixel, yPixel);
+                ctx.lineTo(x.left, yPixel);
                 ctx.stroke();
                 ctx.restore();
             }
         };
 
-        // Functie om de grafiek te tekenen/updaten
-        function drawChart() {
-            // Huidige waarden ophalen
-            const C0 = parseFloat(c0Input.value);
-            const G = parseFloat(gInput.value);
-            const mpc = parseFloat(mpcInput.value);
-            const t = parseFloat(taxRateInput.value);
-
-            // Waarde-displays updaten
-            c0ValueDisplay.textContent = C0.toFixed(0);
-            gValueDisplay.textContent = G.toFixed(0);
-            mpcValueDisplay.textContent = mpc.toFixed(2);
-            taxRateValueDisplay.textContent = t.toFixed(2);
-
-            // Berekeningen
-            const autonomeBestedingen = C0 + G;
-            const multiplier = 1 / (1 - mpc * (1 - t));
-            const evenwichtsinkomen = autonomeBestedingen * multiplier;
-            
-            // Resultaten-displays updaten
-            multiplierDisplay.textContent = multiplier.toFixed(2);
-            equilibriumDisplay.textContent = evenwichtsinkomen.toFixed(0);
-
-            // Data voor de grafiek voorbereiden
-            const maxInkomen = Math.max(3000, evenwichtsinkomen * 1.5);
-            const labels = [];
-            for (let i = 0; i <= maxInkomen; i += 100) {
-                labels.push(i);
-            }
-
-            const data45Degree = labels.map(y => y); // Y = GB
-            const dataAE = labels.map(y => autonomeBestedingen + mpc * (1 - t) * y); // GB = C + G
-
-            const chartData = {
-                labels: labels,
+        // Initialiseer de grafiek
+        let mainChart = new Chart(ctx, {
+            type: 'line',
+            plugins: [dashedLinesPlugin],
+            data: {
+                labels: Array.from({length: 11}, (_, i) => i * (FIXED_MAX/10)),
                 datasets: [
                     {
                         label: '45-gradenlijn (Y = GB)',
-                        data: data45Degree,
-                        borderColor: 'rgba(59, 130, 246, 0.8)', // Blue 500
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        data: [],
+                        borderColor: '#3b82f6',
                         borderWidth: 2,
                         pointRadius: 0,
-                        tension: 0.1,
+                        fill: false
                     },
                     {
                         label: 'Geaggregeerde Bestedingen (GB)',
-                        data: dataAE,
-                        borderColor: 'rgba(239, 68, 68, 0.8)', // Red 500
-                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                        borderWidth: 3,
+                        data: [],
+                        borderColor: '#ef4444',
+                        borderWidth: 4,
                         pointRadius: 0,
-                        tension: 0.1,
+                        fill: false,
+                        tension: 0
                     },
                     {
-                        label: 'Evenwicht',
-                        data: [{ x: evenwichtsinkomen, y: evenwichtsinkomen }],
-                        borderColor: 'rgba(16, 185, 129, 1)', // Emerald 500
-                        backgroundColor: 'rgba(16, 185, 129, 1)',
-                        pointRadius: 8,
-                        pointHoverRadius: 10,
+                        id: 'eq',
+                        label: 'Evenwichtspunt',
+                        data: [],
                         type: 'scatter',
+                        backgroundColor: '#10B981',
+                        borderColor: '#ffffff',
+                        borderWidth: 3,
+                        pointRadius: 10,
+                        pointHoverRadius: 12
                     }
                 ]
-            };
-            
-            // Vernietig oude grafiek indien deze bestaat
-            if(chart) {
-                chart.destroy();
-            }
-
-            // Maak nieuwe grafiek aan
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: chartData,
-                plugins: [dashedLinesPlugin], // Hier wordt de plugin toegevoegd
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Inkomen, Productie (Y)',
-                                font: {
-                                    size: 14,
-                                    weight: 'bold'
-                                }
-                            },
-                            type: 'linear',
-                            position: 'bottom',
-                             min: 0,
-                             max: maxInkomen
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Geaggregeerde Bestedingen (GB)',
-                                font: {
-                                    size: 14,
-                                    weight: 'bold'
-                                }
-                            },
-                            min: 0,
-                            max: maxInkomen
-                        }
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 400, // Maakt de beweging vloeiend
+                    easing: 'easeOutQuart'
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        min: 0,
+                        max: FIXED_MAX,
+                        title: { display: true, text: 'Nationaal Inkomen (Y)', font: { weight: 'bold' } }
                     },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            enabled: false
-                        }
-                    },
-                    animation: {
-                        duration: 200 // Soepele overgang bij update
+                    y: {
+                        min: 0,
+                        max: FIXED_MAX,
+                        title: { display: true, text: 'Bestedingen (GB)', font: { weight: 'bold' } }
                     }
+                },
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: { enabled: false }
                 }
-            });
-        }
-
-        // Event listeners toevoegen aan alle sliders
-        [c0Input, gInput, mpcInput, taxRateInput].forEach(input => {
-            input.addEventListener('input', drawChart);
+            }
         });
 
-        // Initieel de grafiek tekenen bij het laden van de pagina
-        window.onload = drawChart;
+        function update() {
+            // Waarden uitlezen
+            const C0 = parseFloat(sC0.value);
+            const O = parseFloat(sO.value);
+            const c = parseFloat(sC.value);
+            const b = parseFloat(sB.value);
+
+            // Labels updaten
+            vC0.innerText = C0;
+            vO.innerText = O;
+            vC.innerText = c.toFixed(2);
+            vB.innerText = b.toFixed(2);
+
+            // Berekeningen
+            const autonomeBestedingen = C0 + O;
+            const helling = c * (1 - b);
+            const multiplier = 1 / (1 - helling);
+            const Ystar = autonomeBestedingen * multiplier;
+
+            // Stats updaten
+            mText.innerText = multiplier.toFixed(2);
+            yStarText.innerText = Math.round(Ystar);
+
+            // Data voor lijnen berekenen
+            const xValues = [0, FIXED_MAX];
+            
+            // 45-gradenlijn data
+            mainChart.data.datasets[0].data = xValues.map(x => ({x: x, y: x}));
+            
+            // GB-lijn data
+            mainChart.data.datasets[1].data = xValues.map(x => ({
+                x: x, 
+                y: autonomeBestedingen + helling * x
+            }));
+
+            // Evenwichtspunt
+            mainChart.data.datasets[2].data = [{x: Ystar, y: Ystar}];
+
+            // Update zonder de grafiek te vernietigen
+            mainChart.update();
+        }
+
+        // Listeners
+        [sC0, sO, sC, sB].forEach(s => s.addEventListener('input', update));
+
+        // Start
+        update();
     </script>
-
-</body>
-</html>
-
-
-    <p>Zoals je kunt zien, verandert het inkomen als...</p>
 </body>
 </html>
