@@ -17,14 +17,16 @@
             font-family: 'Inter', sans-serif;
             touch-action: manipulation;
         }
-        /* Verbeterde slider styling voor soepele interactie */
+        /* Responsieve en soepele styling voor sliders */
         input[type="range"] {
             -webkit-appearance: none;
+            appearance: none;
             width: 100%;
             height: 10px;
             border-radius: 5px;
-            background: #e5e7eb;
+            background: #e2e8f0;
             outline: none;
+            cursor: pointer;
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -33,9 +35,23 @@
             height: 24px;
             border-radius: 50%;
             background: #10B981;
-            cursor: pointer;
+            cursor: grab;
             border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+            transition: transform 0.1s ease;
+        }
+        input[type="range"]:active::-webkit-slider-thumb {
+            cursor: grabbing;
+            transform: scale(1.15);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #10B981;
+            cursor: grab;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.25);
         }
     </style>
 </head>
@@ -45,7 +61,7 @@
         
         <header class="text-center mb-6">
             <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Interactief Keynesiaans Kruis</h1>
-            <p class="text-slate-600 mt-2">Versleep de schuifregelaars en zie direct het effect op het evenwicht.</p>
+            <p class="text-slate-600 mt-2">Versleep de schuifregelaars en zie direct hoe het evenwichtsinkomen tot stand komt.</p>
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -59,54 +75,54 @@
                     Instellingen
                 </h2>
                 
-                <div class="space-y-8">
+                <div class="space-y-6">
                     <!-- Autonome Consumptie -->
                     <div>
                         <div class="flex justify-between mb-2">
-                            <span class="text-sm font-semibold text-slate-600">Autonome Consumptie (C₀)</span>
-                            <span id="c0Val" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">100</span>
+                            <span class="text-sm font-semibold text-slate-700">Autonome Consumptie (C₀)</span>
+                            <span id="c0Val" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">400</span>
                         </div>
-                        <input type="range" id="c0Slider" min="0" max="1000" value="400" step="10">
+                        <input type="range" id="c0Slider" min="0" max="1000" value="400" step="1">
                     </div>
 
                     <!-- Overheidsbestedingen -->
                     <div>
                         <div class="flex justify-between mb-2">
-                            <span class="text-sm font-semibold text-slate-600">Overheidsbestedingen (O)</span>
-                            <span id="oVal" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">200</span>
+                            <span class="text-sm font-semibold text-slate-700">Overheidsbestedingen (O)</span>
+                            <span id="oVal" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">600</span>
                         </div>
-                        <input type="range" id="oSlider" min="0" max="1500" value="600" step="10">
+                        <input type="range" id="oSlider" min="0" max="1500" value="600" step="1">
                     </div>
                     
                     <!-- Marginale Consumptiequote -->
                     <div>
                         <div class="flex justify-between mb-2">
-                            <span class="text-sm font-semibold text-slate-600">Consumptiequote (c)</span>
-                            <span id="cVal" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">0.75</span>
+                            <span class="text-sm font-semibold text-slate-700">Consumptiequote (c)</span>
+                            <span id="cVal" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">0.75</span>
                         </div>
-                        <input type="range" id="cSlider" min="0.1" max="0.95" value="0.75" step="0.01">
+                        <input type="range" id="cSlider" min="0.10" max="0.90" value="0.75" step="0.005">
                     </div>
 
                     <!-- Belastingtarief -->
                     <div>
                         <div class="flex justify-between mb-2">
-                            <span class="text-sm font-semibold text-slate-600">Belastingtarief (b)</span>
-                            <span id="bVal" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">0.20</span>
+                            <span class="text-sm font-semibold text-slate-700">Belastingtarief (b)</span>
+                            <span id="bVal" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">0.20</span>
                         </div>
-                        <input type="range" id="bSlider" min="0" max="0.5" value="0.20" step="0.01">
+                        <input type="range" id="bSlider" min="0.00" max="0.50" value="0.20" step="0.005">
                     </div>
                 </div>
 
-                <div class="mt-10 p-5 bg-slate-900 rounded-xl text-white">
-                    <h3 class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Kerncijfers</h3>
+                <div class="mt-8 p-5 bg-slate-900 rounded-xl text-white shadow-inner">
+                    <h3 class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Uitkomsten</h3>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <p class="text-xs text-slate-400">Multiplier (α)</p>
-                            <p id="multiplierText" class="text-2xl font-bold">2.50</p>
+                            <p class="text-xs text-slate-400 font-medium">Multiplier (α)</p>
+                            <p id="multiplierText" class="text-2xl font-bold tracking-tight">2.50</p>
                         </div>
                         <div>
-                            <p class="text-xs text-slate-400">Inkomen (Y*)</p>
-                            <p id="yStarText" class="text-2xl font-bold text-emerald-400">2500</p>
+                            <p class="text-xs text-slate-400 font-medium">Evenwichtsinkomen (Y*)</p>
+                            <p id="yStarText" class="text-2xl font-bold tracking-tight text-emerald-400">2500</p>
                         </div>
                     </div>
                 </div>
@@ -115,20 +131,23 @@
             <!-- Grafiek sectie -->
             <div class="lg:col-span-2 space-y-6">
                 <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <div class="relative h-[400px] md:h-[500px]">
+                    <div class="relative h-[420px] md:h-[500px]">
                         <canvas id="mainChart"></canvas>
                     </div>
                 </div>
 
-                <div class="bg-emerald-50 border border-emerald-100 p-5 rounded-xl">
-                    <h3 class="text-emerald-800 font-bold mb-2 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <div class="bg-emerald-50 border border-emerald-200/70 p-5 rounded-xl">
+                    <h3 class="text-emerald-900 font-bold mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                         </svg>
                         Wat gebeurt er?
                     </h3>
-                    <p class="text-emerald-900 text-sm leading-relaxed">
-                        De <strong>schuine rode lijn</strong> toont de totale <strong>geaggregeerde bestedingen</strong>. Wanneer je de <em>Consumptiequote (c)</em> of het <em>Belastingtarief (b)</em> aanpast, verandert de <strong>helling</strong> van de lijn. Verander je <em>C₀</em> of <em>O</em>? Dan verschuift de hele lijn <strong>omhoog of omlaag</strong>. Het evenwicht ligt altijd op de blauwe 45-gradenlijn.
+                    <p class="text-emerald-950 text-sm leading-relaxed">
+                        De <strong>rode lijn</strong> toont de totale <strong>geaggregeerde bestedingen (GB)</strong>. 
+                        Wanneer je <em>c</em> of <em>b</em> aanpast, verandert de <strong>helling</strong> van de bestedingslijn. 
+                        Verander je <em>C₀</em> of <em>O</em>? Dan verschuift de lijn <strong>evenwijdig omhoog of omlaag</strong>. 
+                        Het evenwichtsinkomen <strong>Y*</strong> ligt op het snijpunt met de blauwe 45-gradenlijn (waar geldt: $Y = GB$).
                     </p>
                 </div>
             </div>
@@ -152,10 +171,12 @@
         const mText = document.getElementById('multiplierText');
         const yText = document.getElementById('yStarText');
 
-        // Vaste schaal voor maximale duidelijkheid
-        const FIXED_MAX = 5000;
+        // Vloeiend schaalbeheer (geen plotse sprongen meer)
+        let currentMax = 6000;
+        let targetMax = 6000;
+        let animFrameId = null;
 
-        // Custom plugin voor de hulplijnen (stippellijnen)
+        // Custom plugin voor de stippellijnen en as-coördinaten
         const dashedLinesPlugin = {
             id: 'dashedLines',
             afterDraw: (chart) => {
@@ -167,10 +188,12 @@
                 const xPixel = x.getPixelForValue(point.x);
                 const yPixel = y.getPixelForValue(point.y);
 
+                if (isNaN(xPixel) || isNaN(yPixel)) return;
+
                 ctx.save();
-                ctx.setLineDash([6, 6]);
-                ctx.strokeStyle = '#94a3b8';
-                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.strokeStyle = '#059669'; // Emerald-600
+                ctx.lineWidth = 1.75;
 
                 // Verticaal naar X-as
                 ctx.beginPath();
@@ -183,16 +206,52 @@
                 ctx.moveTo(xPixel, yPixel);
                 ctx.lineTo(x.left, yPixel);
                 ctx.stroke();
+
+                // Waarde-badges tekenen
+                ctx.setLineDash([]);
+                const roundedVal = Math.round(point.x);
+
+                const drawBadge = (bx, by, text) => {
+                    ctx.font = 'bold 11px Inter, sans-serif';
+                    const textWidth = ctx.measureText(text).width;
+                    const w = textWidth + 12;
+                    const h = 20;
+                    const posX = bx - w / 2;
+                    const posY = by - h / 2;
+
+                    ctx.fillStyle = '#10B981';
+                    ctx.beginPath();
+                    if (ctx.roundRect) ctx.roundRect(posX, posY, w, h, 4);
+                    else ctx.rect(posX, posY, w, h);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(text, posX + w / 2, posY + h / 2);
+                };
+
+                // Label op X-as (net boven de as-lijn)
+                drawBadge(xPixel, y.bottom - 12, `Y* = ${roundedVal}`);
+                // Label op Y-as (net rechts van de as-lijn)
+                drawBadge(x.left + 36, yPixel, `GB* = ${roundedVal}`);
+
+                // Label bij het evenwichtspunt zelf
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.fillStyle = '#065f46';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(` Evenwicht (${roundedVal})`, xPixel + 8, yPixel - 6);
+
                 ctx.restore();
             }
         };
 
-        // Initialiseer de grafiek
+        // Initialiseer Chart.js
         let mainChart = new Chart(ctx, {
             type: 'line',
             plugins: [dashedLinesPlugin],
             data: {
-                labels: Array.from({length: 11}, (_, i) => i * (FIXED_MAX/10)),
                 datasets: [
                     {
                         label: '45-gradenlijn (Y = GB)',
@@ -206,7 +265,7 @@
                         label: 'Geaggregeerde Bestedingen (GB)',
                         data: [],
                         borderColor: '#ef4444',
-                        borderWidth: 4,
+                        borderWidth: 3.5,
                         pointRadius: 0,
                         fill: false,
                         tension: 0
@@ -218,30 +277,43 @@
                         type: 'scatter',
                         backgroundColor: '#10B981',
                         borderColor: '#ffffff',
-                        borderWidth: 3,
-                        pointRadius: 10,
-                        pointHoverRadius: 12
+                        borderWidth: 2.5,
+                        pointRadius: 9,
+                        pointHoverRadius: 11
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: {
-                    duration: 400, // Maakt de beweging vloeiend
-                    easing: 'easeOutQuart'
+                animation: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 20,
+                        bottom: 10
+                    }
                 },
                 scales: {
                     x: {
                         type: 'linear',
                         min: 0,
-                        max: FIXED_MAX,
-                        title: { display: true, text: 'Nationaal Inkomen (Y)', font: { weight: 'bold' } }
+                        max: currentMax,
+                        ticks: {
+                            maxTicksLimit: 7,
+                            precision: 0
+                        },
+                        title: { display: true, text: 'Nationaal Inkomen (Y)', font: { weight: 'bold', size: 13 } }
                     },
                     y: {
                         min: 0,
-                        max: FIXED_MAX,
-                        title: { display: true, text: 'Bestedingen (GB)', font: { weight: 'bold' } }
+                        max: currentMax,
+                        ticks: {
+                            maxTicksLimit: 7,
+                            precision: 0
+                        },
+                        title: { display: true, text: 'Geaggregeerde Bestedingen (GB)', font: { weight: 'bold', size: 13 } }
                     }
                 },
                 plugins: {
@@ -251,53 +323,89 @@
             }
         });
 
-        function update() {
+        function renderLoop() {
             // Waarden uitlezen
             const C0 = parseFloat(sC0.value);
             const O = parseFloat(sO.value);
             const c = parseFloat(sC.value);
             const b = parseFloat(sB.value);
 
-            // Labels updaten
-            vC0.innerText = C0;
-            vO.innerText = O;
+            // Labels direct bijwerken
+            vC0.innerText = Math.round(C0);
+            vO.innerText = Math.round(O);
             vC.innerText = c.toFixed(2);
             vB.innerText = b.toFixed(2);
 
             // Berekeningen
             const autonomeBestedingen = C0 + O;
             const helling = c * (1 - b);
-            const multiplier = 1 / (1 - helling);
+            const multiplier = 1 / Math.max(0.01, 1 - helling);
             const Ystar = autonomeBestedingen * multiplier;
 
-            // Stats updaten
+            // Kerncijfers bijwerken
             mText.innerText = multiplier.toFixed(2);
             yStarText.innerText = Math.round(Ystar);
 
-            // Data voor lijnen berekenen
-            const xValues = [0, FIXED_MAX];
-            
-            // 45-gradenlijn data
-            mainChart.data.datasets[0].data = xValues.map(x => ({x: x, y: x}));
-            
-            // GB-lijn data
-            mainChart.data.datasets[1].data = xValues.map(x => ({
-                x: x, 
-                y: autonomeBestedingen + helling * x
-            }));
+            // Doelschaal bepalen zodat het snijpunt altijd ruim in beeld blijft
+            const neededMax = Ystar * 1.35;
+            if (neededMax > targetMax) {
+                targetMax = Math.max(6000, Math.ceil(neededMax / 1000) * 1000);
+            } else if (neededMax < targetMax * 0.60 && targetMax > 6000) {
+                targetMax = Math.max(6000, Math.ceil(neededMax / 1000) * 1000);
+            }
 
-            // Evenwichtspunt
-            mainChart.data.datasets[2].data = [{x: Ystar, y: Ystar}];
+            // Vloeiende interpolatie (lerp) van de asgrootte voorkomt elke plotse verspringing
+            let keepAnimating = false;
+            const diff = targetMax - currentMax;
+            if (Math.abs(diff) > 2) {
+                currentMax += diff * 0.12;
+                keepAnimating = true;
+            } else {
+                currentMax = targetMax;
+            }
 
-            // Update zonder de grafiek te vernietigen
-            mainChart.update();
+            // Assen instellen
+            mainChart.options.scales.x.max = currentMax;
+            mainChart.options.scales.y.max = currentMax;
+
+            // Coördinaten berekenen
+            mainChart.data.datasets[0].data = [
+                { x: 0, y: 0 }, 
+                { x: currentMax, y: currentMax }
+            ];
+            mainChart.data.datasets[1].data = [
+                { x: 0, y: autonomeBestedingen }, 
+                { x: currentMax, y: autonomeBestedingen + helling * currentMax }
+            ];
+            mainChart.data.datasets[2].data = [
+                { x: Ystar, y: Ystar }
+            ];
+
+            // Direct renderen op canvas zonder vertraging
+            mainChart.update('none');
+
+            // Blijf renderen zolang de as nog vloeiend meeglijdt naar zijn doel
+            if (keepAnimating) {
+                animFrameId = requestAnimationFrame(renderLoop);
+            } else {
+                animFrameId = null;
+            }
         }
 
-        // Listeners
-        [sC0, sO, sC, sB].forEach(s => s.addEventListener('input', update));
+        function scheduleUpdate() {
+            if (!animFrameId) {
+                animFrameId = requestAnimationFrame(renderLoop);
+            }
+        }
 
-        // Start
-        update();
+        // Listeners koppelen aan alle schuiven (voor zowel muis als touch)
+        [sC0, sO, sC, sB].forEach(slider => {
+            slider.addEventListener('input', scheduleUpdate);
+            slider.addEventListener('change', scheduleUpdate);
+        });
+
+        // Initiële berekening uitvoeren
+        renderLoop();
     </script>
 </body>
 </html>
